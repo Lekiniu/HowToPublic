@@ -1,0 +1,32 @@
+﻿@model HowToWebApplication.Models.ArticlesCustomClass
+
+@*@ViewContext.Controller.ViewBag.Categories*@
+@ViewContext.Controller.ViewBag.RequestIDs
+
+
+@{
+    Layout = null;
+}
+
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 class="modal-title">@Resources.Global.ArticleDetails</h3>
+</div>
+
+<div class="modal-body form">
+
+
+    @Html.Partial("/Views/Shared/ArticlesSharedViews/_ArticlesSharedInfo.cshtml", Model)
+
+</div>
+
+
+<div class="modal-footer">
+    <button class="btn btn-warning" data-dismiss="modal">@Resources.Global.Close</button>
+</div>
+
+
+
+
+

@@ -1,0 +1,154 @@
+﻿
+@model IEnumerable<HowToWebApplication.Models.ArticlesCustomClass>
+
+
+@{
+    Layout = null;
+    //var categoriesList = (IEnumerable<HowToWebApplication.Models.categories>)TempData["categories"];
+    //var categoriesList = result.ToList();
+}
+
+
+
+@using (Html.BeginForm("MultiDelete", "Admin", FormMethod.Post))
+{
+    <table class="table table-striped table-bordered" id="table" style="width:100%">
+        <thead>
+            @*<table class="table" id="table" style="width:100%">*@
+            <tr>
+                <th>
+                    <input type="submit" value="@Resources.Global.Delete" onclick="return confirm('are you sure')" class="btn btn-danger btn-sm" />
+                    <input type="checkbox" id="checkBoxAll" style=" display: block; margin-top: 10px;" />
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.MainImagesList)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Date)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IsBlocked)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.User)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ratings)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Categories)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkBoxId" value="@item.Id" name="articleId" style="margin-top: 10px;" />
+                    </td>
+                    <td>
+                        @{var counter = 0;}
+                        @if (item.MainImagesList.Count() != 0)
+                        {
+                            foreach (var pic in item.MainImagesList)
+                            {
+                                counter++;
+                                <div id="mainPic">
+                                    <img src="@Url.Content(pic.url)" style=" width: 50px; height:50px;" />
+                                </div>
+                            }
+                            if (counter == 0)
+                            {
+                                <div id="mainPic">
+                                    <img src="/images/NoImage.png" style=" width: 50px; height:50px;" />
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div id="mainPic">
+                                <img src="/images/NoImage.png" style=" width: 50px; height:50px;" />
+                            </div>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsBlocked)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User.name)  @Html.DisplayFor(modelItem => item.User.surname)
+                    </td>
+                    <td>
+                        @if (item.Ratings.Count() != 0)
+                        {
+
+                            @Html.DisplayFor(modelItem => item.Ratings.Average(e => e.rating))
+                            break;
+                        }
+                        else
+                        {
+                            <p>---------</p>
+                        }
+                    </td>
+                    <!--გამოსაცდელია-->
+                    <td>
+                        @foreach (var category in item.Categories)
+                        {
+                            <p>@category.name</p>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("EditArticles", "Admin", new { id = item.Id })" title="@Resources.Global.Edit" class="btn btn-success btn-sm modal-form">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+
+                        <a href="@Url.Action("ArticlesDetails", "Admin", new { id = item.Id })" title="@Resources.Global.Details" class=" btn btn-info btn-sm modal-data">
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                        </a>
+
+                        <a href="@Url.Action("DeleteArticle", "Admin", new { id = item.Id })" title="@Resources.Global.Delete" class="btn btn-danger btn-sm delete-data">
+                            <span class="glyphicon glyphicon-remove-sign"></span>
+                        </a>
+
+
+                        @if (!item.IsBlocked)
+                        {
+                            <a href="@Url.Action("BlockArticle", "Admin", new { id = item.Id })" title="@Resources.Global.Block" style="border: 1px solid grey;" class="block-link btn btn-warning btn-sm" data_id=@item.Id>
+                                <span class="glyphicon glyphicon-minus-sign"></span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("UnBlockArticle", "Admin", new { id = item.Id })" title="@Resources.Global.UnBlock" style="border: 1px solid grey;" class="Unblock-link btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-ok-sign"></span>
+                            </a>
+                        }
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+
+
+
+
+
+
+
+
+
+

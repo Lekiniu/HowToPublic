@@ -1,0 +1,44 @@
+﻿@model HowToWebApplication.Models.ArticlesCustomClass
+
+@*@ViewContext.Controller.ViewBag.Categories*@
+@ViewContext.Controller.ViewBag.RequestIDs
+
+
+
+@{
+    Layout = null;
+}
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 class="modal-title">@Resources.Global.ArticleDelete</h3>
+</div>
+
+<div class="modal-body">
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.Partial("/Views/Shared/ArticlesSharedViews/_ArticlesSharedInfo.cshtml", Model)
+
+        @Html.HiddenFor(model => model.Id, new { id = "articleId" }) 
+        <div class="form-group">
+            <div class="col-sm-9 col-sm-offset-3">
+                <h3>
+                    <span class="label label-danger">
+                        @Resources.Global.ConfirmAsk
+                    </span>
+                </h3>
+            </div>
+        </div>
+
+
+        <div class="modal-footer">
+            <button class="btn btn-warning" data-dismiss="modal">@Resources.Global.Close</button>
+            <input class="btn btn-danger" id="submitBtn" type="submit" value="Yes" />
+        </div>
+    }
+</div>
+
+

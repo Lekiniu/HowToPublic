@@ -1,0 +1,92 @@
+﻿@model HowToWebApplication.Models.ArticlesCustomClass
+
+
+
+
+<dl class="dl-horizontal">
+    <dt>
+        @Html.DisplayNameFor(model => model.Title)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Title)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Content)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Content)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Date)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.Date)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.IsBlocked)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.IsBlocked)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.User)
+    </dt>
+    <dd>
+        @Html.DisplayFor(model => model.User.name)  @Html.DisplayFor(model => model.User.surname)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Categories)
+    </dt>
+    <dd>
+        @foreach (var item in Model.Categories)
+        {
+            @item.name<text>&nbsp;</text>
+        }
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Requests)
+    </dt>
+    <dd>
+        @foreach (var item in Model.Requests)
+        {
+            @item.title<text>&nbsp;</text>
+        }
+    </dd>
+
+    <dt>
+        @Html.DisplayNameFor(model => model.Images)
+    </dt>
+    <dd>
+        @if (Model.ImagesList.ToList().Count != 0)
+        {
+            <p>
+                <a href="@Url.Action("ArticleImageList", "Admin", new { id = Model.Id, IsInfo = true })" id="btnCreateAsset" title=@Resources.Global.Images data-toggle="modal" class="btn btn-primary btn-sm modal-Images" style="float:none; margin-top: 0px;">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @Resources.Global.Images
+                </a>
+            </p>
+        }
+        else
+        {
+            <div> @Resources.Global.NoImagesInfo </div>
+        }
+    </dd>
+    <dt>
+        @Resources.Global.MainImage
+    </dt>
+    <dd>
+        <div class="Mainpic">
+            @*@{var counter = 0;}*@
+            @if (Model.MainImage != null)
+            {
+                <div class="img" style="position:relative; min-width: 230px; min-height: 230px; padding: 13px; display: inline-block; ">
+                    <img src="@Url.Content(Model.MainImage.url)" style="width:200px" ; />
+                </div>
+            }
+            else
+            {
+                <div> @Resources.Global.NoMainImageInfo </div>
+            }
+        </div>
+    </dd>
+
+</dl>

@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNet.Identity
+@using HowToWebApplication.Helpers;
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+    }
+}
+else if (LoginHelper.IsLoggedIn())
+{
+    using (Html.BeginForm("LogOffSession", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @*<ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + LoginHelper.CurrentUser().email + "!", "UserDetails", "Users", new { id = LoginHelper.CurrentUser().Id }, null)
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()"> Log off</a></li>
+        </ul>*@
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown top-menu-item-xs">
+                <a href="" class="dropdown-toggle profile waves-effect waves-light" data-toggle="dropdown" aria-expanded="true"><img src="~/images/avatar-1.jpg" alt="user-img" class="img-circle"> </a>
+                <ul class="dropdown-menu">
+                    <li><a href="@Url.Action("UserDetails", "Admin", new { id =  LoginHelper.CurrentUser().Id})"><i class="ti-user m-r-10 text-custom"></i> Profile</a></li>
+                    @*<li><a href="javascript:void(0)"><i class="ti-settings m-r-10 text-custom"></i> Settings</a></li>
+                    <li><a href="javascript:void(0)"><i class="ti-lock m-r-10 text-custom"></i> Lock screen</a></li>*@
+                    <li class="divider"></li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="ti-power-off m-r-10 text-danger"></i> Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink(Resources.Global.Register, "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", data_toggle = "modal", title = "Register" })</li>
+        <li>@Html.ActionLink(Resources.Global.Login, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", data_toggle = "modal", title = "Login" })</li>
+    </ul>
+}
+
+<script src="~/Scripts/Json Scripts/registerJson.js"></script>

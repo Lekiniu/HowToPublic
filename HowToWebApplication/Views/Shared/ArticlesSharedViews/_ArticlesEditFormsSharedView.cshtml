@@ -1,0 +1,98 @@
+﻿@model HowToWebApplication.Models.ArticlesCustomClass
+
+@{
+    Layout = null;
+}
+
+
+
+<style>
+    #inputButton {
+        background-color: #2e6da4;
+        border-color: #2e6da4;
+        color: white;
+    }
+
+
+    .long-textbox {
+        max-width: none;
+    }
+</style>
+
+<script src="~/Scripts/reqChechBox.js"></script>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+    <h3 class="modal-title">@Resources.Global.EditArticle</h3>
+</div>
+
+
+@using (Html.BeginForm("EditArticles", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal-body">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @*@Html.HiddenFor(model => model.Id)*@
+            @Html.HiddenFor(model => model.Id, new { id = "articleId" })
+
+            @Html.Partial("/Views/Shared/ArticlesSharedViews/_ArticleSharedForms.cshtml", Model)
+
+
+            <div class="form-group">
+                @Html.Label(@Resources.Global.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+                @if (Model.ImagesList.Count() != 0)
+                {
+                    <p>
+                        <a href="@Url.Action("ArticleImageList", "Admin", new { id = Model.Id, IsInfo=false})" id="btnEditImg" title=@Resources.Global.Images data-toggle="modal" class="btn btn-primary btn-sm modal-Images" style="float:none; margin-top: 0px;">
+                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>@Resources.Global.Images
+                        </a>
+                    </p>
+                }
+                else
+                {
+                    <div style="line-height: 30px;">@Resources.Global.NoImagesInfo </div>
+                }
+            </div>
+                    <div id="deleteImageConfirm" style="display:none; color:red; font-weight:bolder;margin-left: 25px;"><p>Image has been deleted</p></div>
+
+                    <div class="form-group">
+                        @Html.Label(@Resources.Global.MainImage, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div id="main-artpic">
+                            @if (Model.MainImage != null)
+                            {
+                                        <div class="main-img" id="MainImgId " style="position:relative; min-width: 230px; min-height: 230px; padding: 13px; display: inline-block; ">
+                                            <img class="MainImgClass" src="@Url.Content(Model.MainImage.url)" style="width:200px" ; />
+                                        </div>
+                                    }
+                            else
+                            {
+                                        <p style="line-height: 30px;">  @Resources.Global.NoMainImageInfo </p>
+                            }
+                        </div>
+                    </div>
+                 </div>
+           </div>
+  
+    <div class="modal-footer">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-default" data-dismiss="modal">@Resources.Global.Close</button>
+                <input type="submit" class="btn btn-primary" value=@Resources.Global.Save />
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $("form").removeData("validator");
+    $("form").removeData("unobtrusiveValidation");
+    $.validator.unobtrusive.parse("form");
+</script>
+
+@Scripts.Render("~/Scripts/articleMultidropdown.js")
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+
+
+
